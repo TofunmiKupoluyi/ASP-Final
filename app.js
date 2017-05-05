@@ -13,6 +13,9 @@ var connection = mysql.createConnection({
 });
 
 console.log(process.env.MYSQL_HOST);
+console.log(process.env.MYSQL_PASSWORD);
+console.log(process.env.MYSQL_USER);
+console.log(process.env.MYSQL_DB);
 //essentials
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
