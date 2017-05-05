@@ -33,7 +33,7 @@ chatRouter.get("/", function(req, res){
         var password = "";
         connection.query("INSERT INTO chat_info SET password = ?", [password], function(err, res1){
             if(err){
-                console.log("AN ERROR OCCURED "+err);
+                console.log("AN ERROR OCCURED "+err.stack());
                 res.sendfile("./error.html")
             }
             else{
