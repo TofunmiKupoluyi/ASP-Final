@@ -4,13 +4,7 @@ var session = require("express-session")
 var app = express();
 var mysql = require("mysql");
 var giberrish = require("gibberish-aes/dist/gibberish-aes-1.0.0.js");
-var connection = mysql.createConnection({
-    host: "tkdbinstance.cwxmdow4szsk.us-east-2.rds.amazonaws.com",
-    user: "admin",
-    password: "tof68212",
-    database: "asp",
-    
-});
+var connection = mysql.createConnection(mysql.escape(process.env.DATABASE_URL));
 
 console.log(process.env.MYSQL_HOST);
 console.log(process.env.MYSQL_PASSWORD);
