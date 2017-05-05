@@ -4,7 +4,6 @@ var session = require("express-session")
 var app = express();
 var mysql = require("mysql");
 var giberrish = require("gibberish-aes/dist/gibberish-aes-1.0.0.js");
-var connection = mysql.createConnection(mysql.escape(process.env.DATABASE_URL));
 
 console.log(process.env.MYSQL_HOST);
 console.log(process.env.MYSQL_PASSWORD);
@@ -14,6 +13,7 @@ console.log(process.env.MYSQL_DB);
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use("/", express.static("./"));
+var connection = mysql.createConnection(process.env.DATABASE_URL||"mysql2://admin:tof68212@tkdbinstance.cwxmdow4szsk.us-east-2.rds.amazonaws.com/asp?sslca=amazon-rds-ca-cert.pem");
 app.use("/", express.static("./node_modules"));
 app.use("/", express.static("./simple-scrollbar-master"));
 app.use("/scrollbar", express.static("./malihu-custom-scrollbar-plugin-master"));
