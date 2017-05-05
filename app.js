@@ -5,10 +5,10 @@ var app = express();
 var mysql = require("mysql");
 var giberrish = require("gibberish-aes/dist/gibberish-aes-1.0.0.js");
 var connection = mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "",
-    database: "asp"
+    host: process.env.HOST||"127.0.0.1",
+    user: process.env.USER||"root",
+    password: process.env.PASSWORD||"",
+    database: process.env.DB||"asp"
 });
 
 //essentials
