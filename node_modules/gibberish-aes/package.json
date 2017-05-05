@@ -1,0 +1,87 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "gibberish-aes",
+        "scope": null,
+        "escapedName": "gibberish-aes",
+        "name": "gibberish-aes",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\User\\Documents\\Node Projects\\ASP"
+    ]
+  ],
+  "_from": "gibberish-aes@latest",
+  "_id": "gibberish-aes@1.0.0",
+  "_inCache": true,
+  "_location": "/gibberish-aes",
+  "_nodeVersion": "0.10.30",
+  "_npmUser": {
+    "name": "hij1nx",
+    "email": "paolo@async.ly"
+  },
+  "_npmVersion": "2.1.5",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "gibberish-aes",
+    "scope": null,
+    "escapedName": "gibberish-aes",
+    "name": "gibberish-aes",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/gibberish-aes/-/gibberish-aes-1.0.0.tgz",
+  "_shasum": "f641c458fb822e0ad61c3c0dea158e0b943e9fc5",
+  "_shrinkwrap": null,
+  "_spec": "gibberish-aes",
+  "_where": "C:\\Users\\User\\Documents\\Node Projects\\ASP",
+  "author": {
+    "name": "Mark Percival",
+    "email": "mark@mpercival.com"
+  },
+  "bugs": {
+    "url": "https://github.com/mdp/gibberish-aes/issues"
+  },
+  "bundleDependencies": [],
+  "contributors": [
+    {
+      "name": "Mark Percival",
+      "email": "mark@mpercival.com"
+    }
+  ],
+  "dependencies": {},
+  "description": "A lightweight Javascript Libray for OpenSSL compatible AES CBC encryption.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "f641c458fb822e0ad61c3c0dea158e0b943e9fc5",
+    "tarball": "https://registry.npmjs.org/gibberish-aes/-/gibberish-aes-1.0.0.tgz"
+  },
+  "gitHead": "06921b5218f2987d2fc4c28797af2b5e7d8ad413",
+  "homepage": "https://github.com/mdp/gibberish-aes",
+  "keywords": [],
+  "license": "MIT",
+  "main": null,
+  "maintainers": [
+    {
+      "name": "hij1nx",
+      "email": "paolo@async.ly"
+    }
+  ],
+  "name": "gibberish-aes",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mdp/gibberish-aes.git"
+  },
+  "scripts": {},
+  "version": "1.0.0"
+}

@@ -1,0 +1,69 @@
+<html ng-app="myApp">
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse" style="border-radius:0px 0px 0px 0px">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Audiri Suicide Prevention</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="../counsel">Chatroom</a></li>
+                </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="/login"><span class="glyphicon glyphicon-user"></span> Admin Portal</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Feedback</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <center><h1>ASP Admin Portal</h1></center>
+                <hr>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-4"></div>
+                <div class="col-xs-4" ng-controller= "loginController" ng-cloak>
+
+                    <div class="panel panel-default" style="border-radius:10px 10px 0px 0px">
+                        <div class="panel-body">
+                            <h4>Account Management</h4>
+                            <hr>
+                            <b><a href="../admin/home" class="form-control btn-primary" style="border-radius:0px 0px"><center>Enter Reply Center</center></a></b>
+                            <br>
+                            <b><button type="Submit" ng-click="logout()" class="form-control " style="border-radius:0px 0px">Logout</button></b>
+                            
+                        </div>
+                        <div class="panel-footer">
+                            <center><a href="#"><small>Offer Feedback?</small></a></center>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-xs-4"></div>
+            </div>
+        </div>
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Latest compiled bootstrap JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- Encryption Library -->
+        <script src="/gibberish-aes/dist/gibberish-aes-1.0.0.js"></script>
+        
+        <!-- Angular Javascript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+        
+        <!-- Custom AngularJS -->
+        <script src="/angularapp.js"></script>
+        <!--Scroll Glue -->
+        <script src="/angularjs-scroll-glue/src/scrollglue.js"></script>
+        <!--Scrollbar -->
+        <script src="/simple-scrollbar.min.js"></script>
+        
+    </body>
+</html>

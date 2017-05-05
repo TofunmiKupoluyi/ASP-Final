@@ -1,0 +1,96 @@
+<html ng-app="myApp">
+    <head>
+        <link rel="stylesheet" href="/simple-scrollbar.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/chatbubbles-admin.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse" style="border-radius:0px 0px 0px 0px">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Audiri Suicide Prevention</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="../counsel">Chatroom</a></li>
+                </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="/login"><span class="glyphicon glyphicon-user"></span> Admin Portal</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Feedback</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <br>
+            <div class="row">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-8" ng-controller= "adminController" ng-cloak>
+                    <div class="row">
+                        <div class="col-xs-5 padding-0-right">
+                            <div style="max-height:70%; overflow:scroll">
+                            <ul class="list-group">
+                                <li class="list-group-item" style="border-radius:0px 0px"><input class="input-sm form-control" placeholder="Search ..."></li>
+                                <li class="list-group-item" style="border-radius:0px 0px"><center><b>Messages in Pool</b></li>
+                                <a href="#" class="list-group-item" style="border-radius:0px 0px" ng-repeat="x in messages" ng-click="openMessage(x)"><b>Chat Id: {{x[0].chat_id}}</b><br>{{decrypt(x[0].message_content, x[0].message_security_key)}}</a>
+                            </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 padding-0-left">
+                            <div class="panel panel-default" style="border-radius:0px 0px">
+                                <div class="panel-body">
+                                    <div class="chat" scroll-glue="!!scrollBottom" >
+
+                                        <center><h4><small>Chat Id: {{openedMessage[0].chat_id}}</small></h4></center>
+                                        <span  ng-repeat="x in openedMessage | orderBy: '-'">
+                                            <div class="chat_container">
+                                                <div class ="bubble {{x.user_sent_by}}">
+                                                    <b>{{decrypt(x.message_content, x.message_security_key)}}</b>
+                                                </div>  
+                                            </div>
+                                            <br>
+                                        </span>
+                                    </div> 
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-xs-9">
+                                            <textarea id="messageBox" class="form-control" placeholder="Type message ..." ng-model="adminMessage"></textarea>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <input type="submit" class="btn btn-primary" value="Send" ng-click="sendMessage()">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>         
+                    
+                </div>
+                <div class="col-xs-2"></div>
+            </div>
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Latest compiled bootstrap JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- Encryption Library -->
+        <script src="/gibberish-aes/dist/gibberish-aes-1.0.0.js"></script>
+        <!-- Angular Javascript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+        <script src="/angularapp.js"></script>
+        <!--Scroll Glue -->
+        <script src="/angularjs-scroll-glue/src/scrollglue.js"></script>
+        <!--Scrollbar -->
+        <script src="/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script>
+            (function($){
+                $(window).on("load",function(){
+                    $(".chat").mCustomScrollbar();
+                });
+            });
+        </script>
+    </body>
+</html>
