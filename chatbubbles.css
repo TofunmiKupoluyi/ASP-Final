@@ -42,7 +42,15 @@
     /*box-shadow: -2px 2px 2px 0 rgba( 178, 178, 178, .4 );*/
     left: -9px;           
 }
-
+.adminNameclient{
+    text-align:right;
+    margin: 5px 20px;
+    clear:both;
+}
+.adminNameaudiri{
+    margin: 5px 20px;
+    clear:both;
+}
 .client {
     float:right;
     margin: 5px 20px 5px 45px;     

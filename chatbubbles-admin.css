@@ -66,9 +66,26 @@
     right: -9px;    
 }
 
+.adminNameclient{
+    margin: 5px 20px;
+    clear:both;
+}
+.adminNameaudiri{
+    text-align:right;
+    margin: 5px 20px;
+    clear:both;
+}
+
 .padding-0-left{
     padding-left:0;
 }
 .padding-0-right{
     padding-right:0;
+}
+
+.alert{
+    background-color:rgb(234,245,253);
+    border-right-style: solid;
+    border-right-width:3px;
+    border-right-color:rgb(66, 134, 244);
 }

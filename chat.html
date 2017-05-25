@@ -36,7 +36,9 @@
                                 <div class="chat_container">
                                     <div class ="bubble {{x.user_sent_by}}">
                                         <b>{{decrypt(x.message_content, x.message_security_key)}}</b>
-                                    </div>   
+                                    </div>
+                                    <div class="adminName{{x.user_sent_by}}"><h5><small><b>{{x.sender_name}}</b></small></div> 
+                                      
                                 </div>
                             <br>
                             </span>
@@ -56,7 +58,40 @@
                             </div>
                         </form>
                     </div>
-                    
+                </div>
+
+                <center><button class="form-control btn btn-default" data-toggle="modal" data-target="#closeModal"><b>Close Chat</b> </button></center>
+                <div id="closeModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content" ng-controller="feedbackController">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <center><h4 class="modal-title">Give Feedback</h4></center>
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert alert-danger" ng-show="alert">
+                                    <center><strong>Error!</strong> Please input a rating.</center>
+                                </div>
+                                <center>
+                                    <span class="glyphicon glyphicon-star" ng-click="starClick(1)" style="font-size:40px; color: {{star[1]}}"></span>
+                                    <span class="glyphicon glyphicon-star" ng-click="starClick(2)" style="font-size:40px; color: {{star[2]}}"></span>
+                                    <span class="glyphicon glyphicon-star" ng-click="starClick(3)" style="font-size:40px; color: {{star[3]}}"></span>
+                                    <span class="glyphicon glyphicon-star" ng-click="starClick(4)" style="font-size:40px; color: {{star[4]}}"></span>
+                                    <span class="glyphicon glyphicon-star" ng-click="starClick(5)" style="font-size:40px; color: {{star[5]}}"></span>
+                                </center>
+                                <br>
+                                <h4><small> <b>  Add Comment : </b></small></h4>
+                                <textarea class="form-control" ng-model="comment" placeholder="Add comment here ..."></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" ng-click="sendFeedback()">Submit</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
 
             </div>
