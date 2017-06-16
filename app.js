@@ -59,7 +59,6 @@ chatRouter.post("/sendMessage", function(req, res) {
     var receivedText = message.substring(5, parseInt(messageLength) + 5);
     var encryptionKey = message.substring(parseInt(messageLength) + 5);
     var decryptedMessage = giberrish.dec(receivedText, encryptionKey);
-    console.log(decryptedMessage);
     var data = {
         err: 1,
         res: "",
@@ -85,9 +84,7 @@ chatRouter.post("/getMessages", function(req, res) {
     var chatId = req.session.chatId;
     if (req.session.adminId) {
         req.session.adminId = req.session.adminId;
-        console.log(req.session.adminId);
     }
-    console.log("MESSAGE FETCHED");
     var data = {
         err: 1,
         res: ""
@@ -100,7 +97,6 @@ chatRouter.post("/getMessages", function(req, res) {
 
         } else {
             data.res = res1;
-            console.log(data);
             res.json(data);
         }
     });
@@ -128,7 +124,6 @@ loginRouter.post("/login", function(req, res) {
             res.json(data);
         } else {
             if (res1[0]) {
-                console.log(res1);
                 req.session.adminUsername = res1[0].admin_username;
                 req.session.adminName = res1[0].admin_name;
                 req.session.adminId = res1[0].admin_id;
