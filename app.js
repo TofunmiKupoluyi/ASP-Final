@@ -80,6 +80,23 @@ chatRouter.post("/sendMessage", function(req, res) {
     });
 });
 
+chatRouter.get("/lastMessageTime", function(req, res) {
+    var data = {
+        err: 1,
+        res: ""
+    }
+    connection.query("SELECT timestamp FROM messages ORDER BY message_id DESC LIMIT 1", function(err, res1, rows) {
+        if (err) {
+            console.log(err);
+            data.res = err;
+        } else {
+            data.err = 0;
+            data.res = res1[0].timestamp;
+            res.json(data);
+        }
+    });
+});
+
 chatRouter.post("/getMessages", function(req, res) {
     var chatId = req.session.chatId;
     if (req.session.adminId) {
