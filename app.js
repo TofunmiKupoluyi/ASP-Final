@@ -32,7 +32,6 @@ app.use("/feedback", feedbackRouter);
 
 chatRouter.get("/", function(req, res) {
     var chatId = req.query.chatid;
-    req.session.chatId = chatId;
     if (!(req.session.chatId)) {
         var password = "";
         connection.query("INSERT INTO chat_info SET password = ?", [password], function(err, res1) {
