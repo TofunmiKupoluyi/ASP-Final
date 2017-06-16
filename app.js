@@ -65,7 +65,8 @@ chatRouter.post("/sendMessage", function(req, res) {
         res: "",
         chatId: ""
     };
-    connection.query("INSERT INTO messages SET message_content = ?, user_sent_by = ?, chat_id =?, message_security_key=?, sender_name=?", [receivedText, "client", chatId, encryptionKey, "Anon"], function(err, res1) {
+    var time = new Date().getTime();
+    connection.query("INSERT INTO messages SET message_content = ?, user_sent_by = ?, chat_id =?, message_security_key=?, sender_name=?, timestamp=?", [receivedText, "client", chatId, encryptionKey, "Anon", time], function(err, res1) {
         if (err) {
             data.res = "Error inserting message " + err;
             console.log(err);
@@ -240,7 +241,8 @@ adminRouter.post("/sendMessage", function(req, res) {
             res: "",
             chatId: ""
         };
-        connection.query("INSERT INTO messages SET message_content = ?, user_sent_by = ?, chat_id =?, message_security_key=?, admin_id=?, sender_name=?", [receivedText, "audiri", chatId, encryptionKey, req.session.adminId, req.session.adminName], function(err, res1) {
+        var time = new Date().getTime();
+        connection.query("INSERT INTO messages SET message_content = ?, user_sent_by = ?, chat_id =?, message_security_key=?, admin_id=?, sender_name=?, timestamp=?", [receivedText, "audiri", chatId, encryptionKey, req.session.adminId, req.session.adminName, time], function(err, res1) {
             if (err) {
                 data.res = "Error inserting message " + err;
                 console.log(err);
