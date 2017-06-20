@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
     host: process.env.MYSQL_HOST || "localhost",
     user: process.env.MYSQL_USER || "root",
     password: process.env.MYSQL_PASSWORD || "",
-    database: process.env.MYSQL_DB || "asp",
+    database: process.env.MYSQL_DB || "asp2",
 });
 
 //essentials
@@ -25,11 +25,12 @@ var chatRouter = express.Router();
 var loginRouter = express.Router();
 var adminRouter = express.Router();
 var feedbackRouter = express.Router();
+var rantRouter = express.Router();
 app.use("/counsel", chatRouter);
 app.use("/login", loginRouter);
 app.use("/admin", adminRouter);
 app.use("/feedback", feedbackRouter);
-
+app.use("/rant", rantRouter);
 chatRouter.get("/", function(req, res) {
     var chatId = req.query.chatid;
     if (!(req.session.chatId)) {
@@ -332,5 +333,95 @@ feedbackRouter.post("/chatFeedback", function(req, res) {
         }
     });
 });
+
+rantRouter.get("/getPublicRants", function(req, res) {
+    var data = {
+        err: 1,
+        res: ""
+    };
+    connection.query("SELECT * FROM rants WHERE rant_type=0 LIMIT 1000", function(err, res1, rows) {
+        if (err) {
+            data.res = "[]";
+        } else {
+            //SAVE 0-100 in localstorage
+            data.err = 0;
+            data.res = {};
+            for (i in res1) {
+                console.log(res1[i].rant_id);
+                data.res[res1[i].rant_id] = {};
+                data.res[res1[i].rant_id]["content"] = res1[i].rant_content;
+                connection.query("SELECT * FROM rant_replies WHERE rant_id=?", [res1[i].rant_id], function(err, res2, rows) {
+                    data.res[res1[i].rant_id]["replies"] = res2;
+                    connection.query("SELECT * FROM rant_likes WHERE rant_id=?", [res1[i].rant_id], function(err, res3, rows) {
+                        data.res[res1[i].rant_id]["likes"] = res3;
+                        res.json(data);
+                    });
+
+                });
+            }
+
+
+        }
+    });
+});
+
+rantRouter.post("/postRant", function(req, res) {
+    var rantContent = req.body.rantContent;
+    var pseudonym = req.body.pseudonym || "Anon";
+    var chatId = req.body.chatId || req.session.chatId;
+    var data = {
+        err: 1,
+        res: ""
+    }
+    connection.query("INSERT INTO rants SET rant_content=?, pseudonym=?, chat_id=?", [rantContent, pseudonym, chatId], function(err, res1) {
+        if (err) {
+            data.res = err;
+            res.json(data);
+        } else {
+            data.err = 0;
+            data.res = "Successful";
+            res.json(data);
+        }
+    });
+});
+
+rantRouter.post("/likeRant", function(req, res) {
+    var rantId = req.body.rantId;
+    var chatId = req.body.chatId || req.session.chatId;
+    var data = {
+        err: 1,
+        res: ""
+    }
+    connection.query("INSERT INTO rant_likes SET rant_id=?, chat_id=?", [rantId, chat], function(err, res1) {
+        if (err) {
+            data.res = err;
+            res.json(data);
+        } else {
+            data.err = 0;
+            data.res = "Successful";
+            res.json(data);
+        }
+    });
+});
+
+rantRouter.post("/replyRant", function(req, res) {
+    var rantId = req.body.rantId;
+    var chatId = req.body.chatId || req.session.chatId;
+    var replyContent = req.body.replyContent;
+    var data = {
+        err: 1,
+        res: ""
+    }
+    connection.query("INSERT INTO rant_replies SET rant_id=?, chat_id=?, rant_reply_content=?", [rantId, chatId, replyContent], function(err, res1) {
+        if (err) {
+            data.res = err;
+            res.json(data);
+        } else {
+            data.res = "Successful";
+            res.json(data);
+        }
+    });
+});
+
 
 app.listen(process.env.PORT || 3000);
