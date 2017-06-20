@@ -341,7 +341,10 @@ rantRouter.get("/getPublicRants", function(req, res) {
     };
     connection.query("SELECT * FROM rants WHERE rant_type=0 LIMIT 1000", function(err, res1, rows) {
         if (err) {
-            data.res = "[]";
+            data.res = err;
+            console.log(err);
+            res.json(data);
+
         } else {
             //SAVE 0-100 in localstorage
             data.err = 0;
