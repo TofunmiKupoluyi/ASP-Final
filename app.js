@@ -379,7 +379,6 @@ rantRouter.post("/postRant", function(req, res) {
     connection.query("INSERT INTO rants SET rant_content=?, pseudonym=?, chat_id=?", [rantContent, pseudonym, chatId], function(err, res1) {
         if (err) {
             data.res = err;
-            console.log(err);
             res.json(data);
         } else {
             data.err = 0;
