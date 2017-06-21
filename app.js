@@ -373,6 +373,7 @@ rantRouter.get("/getPublicRants", function(req, res) {
                     rantIds.push(res1[i].rant_id);
                     data.res[res1[i].rant_id] = {};
                     data.res[res1[i].rant_id]["content"] = res1[i].rant_content;
+                    data.res[res1[i].rant_id]["pseudonym"] = res1[i].pseudonym;
                     if (i == (res1.length - 1)) {
                         getReplies(rantIds);
                     }
