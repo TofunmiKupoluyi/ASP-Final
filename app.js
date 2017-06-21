@@ -358,11 +358,12 @@ rantRouter.get("/getPublicRants", function(req, res) {
                     data.res[res1[i].rant_id]["replies"] = res2;
                     connection.query("SELECT * FROM rant_likes WHERE rant_id=?", [res1[i].rant_id], function(err, res3, rows) {
                         data.res[res1[i].rant_id]["likes"] = res3;
-                        if (i == (res1.length - 1)) {
-                            loopCompleted = 1;
-                        }
                     });
                 });
+
+                if (i == (res1.length - 1)) {
+                    loopCompleted = 1;
+                }
             }
 
             if (loopCompleted == 1) {
