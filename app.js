@@ -413,10 +413,47 @@ rantRouter.get("/getPublicRants", function(req, res) {
             }
         });
     }
-
-
     getRants();
+});
 
+rantRouter.get("/getRantsLikedByUser", function(req, res) {
+    if (req.session.chatId) {
+        var chatId = req.session.chatId;
+        var data = {
+            err: 1,
+            res: ""
+        }
+        connection.query("SELECT * FROM rant_likes WHERE chat_id = ?", [chatId], function(err, res1, rows) {
+            if (err) {
+                data.err = err;
+                res.json(data);
+            } else {
+                data.err = 0;
+                data.res = res1;
+                res.json(data);
+            }
+        });
+    }
+});
+
+rantRouter.get("/getRantsByUser", function(req, res) {
+    if (req.session.chatId) {
+        var chatId = req.session.chatId;
+        var data = {
+            err: 1,
+            res: ""
+        }
+        connection.query("SELECT * FROM rants WHERE chat_id = ?", [chatId], function(err, res1, rows) {
+            if (err) {
+                data.err = err;
+                res.json(data);
+            } else {
+                data.err = 0;
+                data.res = res1;
+                res.json(data);
+            }
+        });
+    }
 });
 
 rantRouter.post("/postRant", function(req, res) {
