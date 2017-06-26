@@ -483,7 +483,7 @@ rantRouter.post("/likeRant", function(req, res) {
         err: 1,
         res: ""
     }
-    connection.query("INSERT INTO rant_likes SET rant_id=?, chat_id=?", [rantId, chat], function(err, res1) {
+    connection.query("INSERT INTO rant_likes SET rant_id=?, chat_id=?", [rantId, chatId], function(err, res1) {
         if (err) {
             data.res = err;
             res.json(data);
