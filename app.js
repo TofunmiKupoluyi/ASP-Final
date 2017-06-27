@@ -475,7 +475,7 @@ rantRouter.get("/getRantsLikedByUser", function(req, res) {
 
     function getRants(array) {
         if (array.length > 0) {
-            connection.query(generateRantsQuery(array), function(err, res1, rows) {
+            connection.query(generateRantsQuery(array), array, function(err, res1, rows) {
                 if (err) {
                     data.res = err;
                     console.log(err);
