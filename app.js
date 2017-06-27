@@ -417,22 +417,135 @@ rantRouter.get("/getPublicRants", function(req, res) {
 });
 
 rantRouter.get("/getRantsLikedByUser", function(req, res) {
-    if (req.session.chatId) {
-        var chatId = req.session.chatId;
-        var data = {
-            err: 1,
-            res: ""
+    var data = {
+        err: 1,
+        res: ""
+    }
+
+    function generateRantsQuery(array) {
+        if (array.length > 0) {
+            var baseString = "SELECT * FROM rants WHERE rant_id=?";
+            for (var i = 1; i < array.length; i++) {
+                baseString += " OR rant_id=?";
+            }
+            return baseString;
         }
-        connection.query("SELECT * FROM rant_likes WHERE chat_id = ?", [chatId], function(err, res1, rows) {
+    }
+
+    function generateLikesQuery(array) {
+        if (array.length > 0) {
+            var baseString = "SELECT * FROM rant_likes WHERE rant_id=?";
+            for (var i = 1; i < array.length; i++) {
+                baseString += " OR rant_id=?";
+            }
+            return baseString;
+        }
+    }
+
+    function generateReplyQuery(array) {
+        if (array.length > 0) {
+            var baseString = "SELECT * FROM rant_replies WHERE rant_id=?";
+            for (var i = 1; i < array.length; i++) {
+                baseString += " OR rant_id=?";
+            }
+            return baseString;
+        }
+    }
+
+    function getRantsLiked(chatId) {
+        connection.query("SELECT * FROM rant_likes WHERE chat_id=?", [chatId], function(err, res1, rows) {
             if (err) {
-                data.err = err;
+                data.res = err;
+                console.log(err);
                 res.json(data);
+
             } else {
+                var loopCompleted = 0;
+                //SAVE 0-100 in localstorage
                 data.err = 0;
-                data.res = res1;
-                res.json(data);
+                data.res = {};
+                var rantIds = [];
+                for (var i in res1) {
+                    rantIds.push(res1[i].rant_id);
+                }
+                getRants(rantIds);
             }
         });
+    }
+
+    function getRants(array) {
+        if (array.length > 0) {
+            connection.query(generateRantsQuery(array), function(err, res1, rows) {
+                if (err) {
+                    data.res = err;
+                    console.log(err);
+                    res.json(data);
+
+                } else {
+                    var loopCompleted = 0;
+                    //SAVE 0-100 in localstorage
+                    data.err = 0;
+                    data.res = {};
+                    var rantIds = [];
+                    for (var i in res1) {
+                        data.res[res1[i].rant_id] = {};
+                        data.res[res1[i].rant_id]["content"] = res1[i].rant_content;
+                        data.res[res1[i].rant_id]["pseudonym"] = res1[i].pseudonym;
+                        if (i == (res1.length - 1)) {
+                            getReplies(array);
+                        }
+                    }
+                }
+            });
+        } else {
+            getLikes(array);
+        }
+    }
+
+    function getReplies(array) {
+        if (array.length > 0) {
+            connection.query(generateReplyQuery(array), array, function(err, res1, rows) {
+                for (var i in array) {
+                    data.res[array[i]]["replies"] = [];
+                    for (var j in res1) {
+                        if (res1[j].rant_id == array[i]) {
+                            data.res[array[i]]["replies"].push(res1[j]);
+                        }
+                    }
+                    if (i == (array.length - 1)) {
+                        getLikes(array);
+                    }
+                }
+            });
+        }
+    }
+
+    function getLikes(array) {
+        if (array.length > 0) {
+            connection.query(generateLikesQuery(array), array, function(err, res1, rows) {
+                for (var i in array) {
+                    data.res[array[i]]["likes"] = [];
+                    for (var j in res1) {
+                        if (res1[j].rant_id == array[i]) {
+                            data.res[array[i]]["likes"].push(res1[j]);
+                        }
+                    }
+                    if (i == (array.length - 1)) {
+                        res.json(data);
+                    }
+                }
+            });
+        } else {
+            data.res = [];
+            res.json(data);
+        }
+    }
+    if (req.session.chatId || req.query.chatId) {
+        var chatId = req.session.chatId || req.query.chatId;
+        getRantsLiked(chatId);
+    } else {
+        data.err = "No Chat Id";
+        res.json(data);
     }
 });
 
@@ -483,7 +596,7 @@ rantRouter.post("/likeRant", function(req, res) {
         err: 1,
         res: ""
     }
-    connection.query("INSERT INTO rant_likes SET rant_id=?, chat_id=?", [rantId, chatId], function(err, res1) {
+    connection.query("INSERT IGNORE INTO rant_likes SET rant_id=?, chat_id=?", [rantId, chatId], function(err, res1) {
         if (err) {
             data.res = err;
             res.json(data);
