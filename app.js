@@ -466,6 +466,8 @@ rantRouter.get("/getRantsLikedByUser", function(req, res) {
                 data.res = {};
                 var rantIds = [];
                 for (var i in res1) {
+                    data.res[res1[i].rant_id] = {};
+                    data.res[res1[i].rant_id]["rant_like_id"] = res1[i].rant_like_id;
                     rantIds.push(res1[i].rant_id);
                 }
                 getRants(rantIds);
@@ -488,7 +490,6 @@ rantRouter.get("/getRantsLikedByUser", function(req, res) {
                     data.res = {};
                     var rantIds = [];
                     for (var i in res1) {
-                        data.res[res1[i].rant_id] = {};
                         data.res[res1[i].rant_id]["content"] = res1[i].rant_content;
                         data.res[res1[i].rant_id]["pseudonym"] = res1[i].pseudonym;
                         if (i == (res1.length - 1)) {
