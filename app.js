@@ -465,13 +465,17 @@ rantRouter.get("/getRantsLikedByUser", function(req, res) {
                 data.err = 0;
                 data.res = {};
                 var rantIds = [];
-                for (var i in res1) {
-                    data.res[res1[i].rant_id] = {};
-                    rantIds.push(res1[i].rant_id);
-                    data.res[res1[i].rant_id]["rant_like_id"] = res1[i].rant_like_id;
-                    if (i == (res1.length - 1)) {
-                        getRants(rantIds);
+                if (res1.length > 0) {
+                    for (var i in res1) {
+                        data.res[res1[i].rant_id] = {};
+                        rantIds.push(res1[i].rant_id);
+                        data.res[res1[i].rant_id]["rant_like_id"] = res1[i].rant_like_id;
+                        if (i == (res1.length - 1)) {
+                            getRants(rantIds);
+                        }
                     }
+                } else {
+                    getLikes([]);
                 }
 
             }
