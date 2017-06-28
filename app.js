@@ -491,8 +491,8 @@ rantRouter.get("/getRantsLikedByUser", function(req, res) {
                     //SAVE 0-100 in localstorage
                     data.err = 0;
                     for (var i in res1) {
-                        data.res[res1[i]]["content"] = res1[i].rant_content;
-                        data.res[res1[i]]["pseudonym"] = res1[i].pseudonym;
+                        data.res[res1[i].rant_id]["content"] = res1[i].rant_content;
+                        data.res[res1[i].rant_id]["pseudonym"] = res1[i].pseudonym;
                         if (i == (res1.length - 1)) {
                             getReplies(array);
                         }
