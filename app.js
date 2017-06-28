@@ -490,10 +490,10 @@ rantRouter.get("/getRantsLikedByUser", function(req, res) {
                     var loopCompleted = 0;
                     //SAVE 0-100 in localstorage
                     data.err = 0;
-                    for (var i in array) {
-                        data.res[array[i]]["content"] = res1[i].rant_content;
-                        data.res[array[i]]["pseudonym"] = res1[i].pseudonym;
-                        if (i == (array.length - 1)) {
+                    for (var i in res1) {
+                        data.res[res1[i]]["content"] = res1[i].rant_content;
+                        data.res[res1[i]]["pseudonym"] = res1[i].pseudonym;
+                        if (i == (res1.length - 1)) {
                             getReplies(array);
                         }
                     }
