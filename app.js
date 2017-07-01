@@ -340,9 +340,9 @@ rantRouter.get("/getPublicRants", function(req, res) {
         res: ""
     };
     var limit = "LIMIT 1000";
-    var addedQuery = "";
+    var addedQuery = "WHERE rant_type = 0 LIMIT 1000";
     if (req.session.chatId) {
-        addedQuery = ((req.query.rantType == 1) ? "WHERE chat_id = " + req.session.chatId : "LIMIT 1000");
+        addedQuery = ((req.query.rantType == 1) ? "WHERE chat_id = " + req.session.chatId : "WHERE rant_type=0 LIMIT 1000");
     }
 
     function generateLikesQuery(array) {
