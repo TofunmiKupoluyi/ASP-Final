@@ -339,6 +339,11 @@ rantRouter.get("/getPublicRants", function(req, res) {
         err: 1,
         res: ""
     };
+    var limit = "LIMIT 1000";
+    var addedQuery = "";
+    if (req.session.chatId) {
+        addedQuery = ((req.query.rantType == 1) ? "WHERE chat_id = " + req.session.chatId : "LIMIT 1000");
+    }
 
     function generateLikesQuery(array) {
         var baseString = "SELECT * FROM rant_likes WHERE rant_id=?";
@@ -357,7 +362,7 @@ rantRouter.get("/getPublicRants", function(req, res) {
     }
 
     function getRants() {
-        connection.query("SELECT * FROM rants WHERE rant_type=0 LIMIT 1000", function(err, res1, rows) {
+        connection.query("SELECT * FROM rants " + addedQuery, function(err, res1, rows) {
             if (err) {
                 data.res = err;
                 console.log(err);
@@ -369,33 +374,40 @@ rantRouter.get("/getPublicRants", function(req, res) {
                 data.err = 0;
                 data.res = {};
                 var rantIds = [];
-                for (var i in res1) {
-                    rantIds.push(res1[i].rant_id);
-                    data.res[res1[i].rant_id] = {};
-                    data.res[res1[i].rant_id]["content"] = res1[i].rant_content;
-                    data.res[res1[i].rant_id]["pseudonym"] = res1[i].pseudonym;
-                    if (i == (res1.length - 1)) {
-                        getReplies(rantIds);
+                if (res1.length > 0) {
+                    for (var i in res1) {
+                        rantIds.push(res1[i].rant_id);
+                        data.res[res1[i].rant_id] = {};
+                        data.res[res1[i].rant_id]["content"] = res1[i].rant_content;
+                        data.res[res1[i].rant_id]["pseudonym"] = res1[i].pseudonym;
+                        if (i == (res1.length - 1)) {
+                            getReplies(rantIds);
+                        }
                     }
+                } else {
+                    data.res = [];
+                    res.json(data);
                 }
             }
         });
     }
 
     function getReplies(array) {
-        connection.query(generateReplyQuery(array), array, function(err, res1, rows) {
-            for (var i in array) {
-                data.res[array[i]]["replies"] = [];
-                for (var j in res1) {
-                    if (res1[j].rant_id == array[i]) {
-                        data.res[array[i]]["replies"].push(res1[j]);
+        if (array.length > 0) {
+            connection.query(generateReplyQuery(array), array, function(err, res1, rows) {
+                for (var i in array) {
+                    data.res[array[i]]["replies"] = [];
+                    for (var j in res1) {
+                        if (res1[j].rant_id == array[i]) {
+                            data.res[array[i]]["replies"].push(res1[j]);
+                        }
+                    }
+                    if (i == (array.length - 1)) {
+                        getLikes(array);
                     }
                 }
-                if (i == (array.length - 1)) {
-                    getLikes(array);
-                }
-            }
-        });
+            });
+        }
     }
 
     function getLikes(array) {
@@ -579,11 +591,12 @@ rantRouter.post("/postRant", function(req, res) {
     var rantContent = req.body.rantContent;
     var pseudonym = req.body.pseudonym || "Anon";
     var chatId = req.body.chatId || req.session.chatId;
+    var rantType = req.body.rantType || 1;
     var data = {
         err: 1,
         res: ""
     }
-    connection.query("INSERT INTO rants SET rant_content=?, pseudonym=?, chat_id=?", [rantContent, pseudonym, chatId], function(err, res1) {
+    connection.query("INSERT INTO rants SET rant_content=?, pseudonym=?, chat_id=?, rant_type=?", [rantContent, pseudonym, chatId, rantType], function(err, res1) {
         if (err) {
             data.res = err;
             res.json(data);
@@ -594,6 +607,7 @@ rantRouter.post("/postRant", function(req, res) {
         }
     });
 });
+
 
 rantRouter.post("/likeRant", function(req, res) {
     var rantId = req.body.rantId;
