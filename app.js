@@ -592,7 +592,7 @@ rantRouter.post("/postRant", function(req, res) {
     var rantContent = req.body.rantContent;
     var pseudonym = req.body.pseudonym || "Anon";
     var chatId = req.body.chatId || req.session.chatId;
-    var rantType = req.body.rantType || 1;
+    var rantType = req.body.rantType || 0;
     var data = {
         err: 1,
         res: ""
