@@ -334,6 +334,75 @@ feedbackRouter.post("/chatFeedback", function(req, res) {
     });
 });
 
+rantRouter.post("/getSingleRant", function(req, res) {
+    var data = {
+        err: 1,
+        res: ""
+    };
+
+    function getRants() {
+        var rantId = req.body.rantId;
+        console.log(rantId);
+        connection.query("SELECT * FROM rants WHERE rant_id=?", [rantId], function(err, res1, rows) {
+            if (err || res1.length <= 0) {
+                data.res = err;
+                console.log(err);
+                res.json(data);
+
+            } else {
+                var loopCompleted = 0;
+                //SAVE 0-100 in localstorage
+                data.err = 0;
+                data.res = {};
+                var rantIds = [];
+                rantIds.push(res1[0].rant_id);
+                data.res[res1[0].rant_id] = {};
+                data.res[res1[0].rant_id]["content"] = res1[0].rant_content;
+                data.res[res1[0].rant_id]["pseudonym"] = res1[0].pseudonym;
+                data.res[res1[0].rant_id]["rantType"] = res1[0].rant_type;
+                getReplies(rantIds);
+            }
+        });
+    }
+
+    function getReplies(array) {
+
+        connection.query("SELECT * FROM rant_replies WHERE rant_id=?", array, function(err, res1, rows) {
+            data.res[array[0]]["replies"] = [];
+            if (res1.length > 0) {
+                for (var j in res1) {
+                    data.res[array[0]]["replies"].push(res1[j]);
+                    if (j == (res1.length - 1)) {
+                        getLikes(array);
+                    }
+                }
+            } else {
+                getLikes(array);
+            }
+        });
+
+    }
+
+    function getLikes(array) {
+        connection.query("SELECT * FROM rant_likes WHERE rant_id=?", array, function(err, res1, rows) {
+
+            data.res[array[0]]["likes"] = [];
+            if (res1.length > 0) {
+                for (var j in res1) {
+                    data.res[array[0]]["likes"].push(res1[j]);
+                    if (j == (res1.length - 1)) {
+                        res.json(data);
+                    }
+                }
+            } else {
+                res.json(data);
+            }
+        });
+    }
+    getRants();
+
+});
+
 rantRouter.get("/getPublicRants", function(req, res) {
     var data = {
         err: 1,
